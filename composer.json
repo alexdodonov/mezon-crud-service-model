@@ -1,0 +1,30 @@
+{
+	"name": "mezon/crud-service-model",
+	"description": "Model with CRUD operations",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Dodonov Alexey",
+			"email": "alexey@dodonov.pro",
+			"homepage": "http://gdzone.ru",
+			"role": "Founder"
+		}
+	],
+	"require": {
+		"php": ">=7.2.0",
+		"mezon/service-model" : "^1.0"
+	},
+	"support": {
+		"email": "alexey@dodonov.pro",
+		"issues": "https://github.com/alexdodonov/mezon-crud-service-model/issues",
+		"source": "https://github.com/alexdodonov/mezon-crud-service-model"
+	},
+	"minimum-stability": "dev",
+	"homepage": "https://github.com/alexdodonov/mezon-crud-service-model",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"Mezon\\CrudService\\": ""
+		}
+	}
+}
