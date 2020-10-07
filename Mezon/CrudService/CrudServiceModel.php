@@ -1,7 +1,6 @@
 <?php
 namespace Mezon\CrudService;
 
-// TODO extract model to the separate package
 /**
  * Class CrudServiceModel
  *
@@ -43,7 +42,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     protected function addDomainIdCondition($domainId, array $where = []): array
     {
         if ($domainId === false) {
-            if (count($where) === 0) {
+            if (empty($where)) {
                 $where[] = '1 = 1';
             }
         } else {
@@ -97,7 +96,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
             $this->getTableName(),
             implode(' AND ', $where));
 
-        if (count($records) === 0) {
+        if (empty($records)) {
             return 0;
         }
 
@@ -113,7 +112,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
      */
     protected function getDefaultOrder(array $order): array
     {
-        return count($order) > 0 ? $order : [
+        return !empty($order) ? $order : [
             'field' => 'id',
             'order' => 'ASC'
         ];
@@ -157,7 +156,9 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
      * @codeCoverageIgnore
      */
     protected function getRecordsTransformer(array &$records)
-    {}
+    {
+        // should be overriden in the derived class
+    }
 
     /**
      * Method fetches records after transformation
@@ -359,7 +360,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
             }
 
             if (isset($_POST[$name])) {
-                $record[$name] = \Mezon\Security\Security::getStringValue($_POST[$name]);
+                $record[$name] = Security::getStringValue($_POST[$name]);
             }
         }
 

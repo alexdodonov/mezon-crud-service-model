@@ -1,57 +1,11 @@
 <?php
+namespace Mezon\CrudService\Tests;
+
+use Mezon\PdoCrud\PdoCrud;
+use Mezon\CrudService\CrudServiceModel;
 
 class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * Method returns mock of the DB connection
-     *
-     * @param int $mode
-     *            - Mock creation mode
-     * @param array $methods
-     *            - Methods tto be mocked
-     * @return object Mock of the connection
-     */
-    protected function getConnectionMock_old(int $mode, array $methods = [
-        'select'
-    ])
-    {
-        $mock = $this->getMockBuilder(\Mezon\PdoCrud\PdoCrud::class)
-            ->disableOriginalConstructor()
-            ->setMethods($methods)
-            ->getMock();
-
-        switch ($mode) {
-            case 0:
-                $mock->method('select')->willReturn([]);
-                break;
-            case 1:
-                $mock->method('select')->willReturn([
-                    [
-                        'records_count' => 1
-                    ]
-                ]);
-                break;
-            case 2:
-                $mock->method('select')->willReturn([
-                    [],
-                    []
-                ]);
-                break;
-            case 3:
-                $mock->expects($this->once())
-                    ->method('insert')
-                    ->willReturn(1);
-                break;
-            case 4:
-                $mock->expects($this->once())
-                    ->method('delete')
-                    ->willReturn(1);
-                break;
-        }
-
-        return $mock;
-    }
 
     /**
      * Method returns mock of the DB connection
@@ -60,7 +14,8 @@ class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
      */
     protected function getConnectionMock()
     {
-        $mock = $this->getMockBuilder(\Mezon\PdoCrud\PdoCrud::class)
+        //TODO replace with PdoCrudMock
+        return $this->getMockBuilder(PdoCrud::class)
             ->disableOriginalConstructor()
             ->setMethods([
             'select',
@@ -69,8 +24,6 @@ class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
             'insert'
         ])
             ->getMock();
-
-        return $mock;
     }
 
     /**
@@ -82,7 +35,7 @@ class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
      */
     protected function getModelMock($connectionMock)
     {
-        $mock = $this->getMockBuilder(\Mezon\CrudService\CrudServiceModel::class)
+        $mock = $this->getMockBuilder(CrudServiceModel::class)
             ->setConstructorArgs([
             [
                 'id' => [
@@ -243,7 +196,7 @@ class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
     public function testConstructor($data, string $origin)
     {
         // setup and test body
-        $model = new \Mezon\CrudService\CrudServiceModel($data, 'entity_name');
+        $model = new CrudServiceModel($data, 'entity_name');
 
         // assertions
         $this->assertTrue($model->hasField($origin), 'Invalid contruction');
@@ -254,9 +207,9 @@ class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructorException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
-        new \Mezon\CrudService\CrudServiceModel(new stdClass(), 'entity_name');
+        new CrudServiceModel(new \stdClass(), 'entity_name');
     }
 
     /**
@@ -382,7 +335,7 @@ class CrudServiceModelUnitTest extends \PHPUnit\Framework\TestCase
         $model = $this->getModelMock($connection);
 
         // test body and assertions
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $model->fetchRecordsByIds("1,2", false);
     }
