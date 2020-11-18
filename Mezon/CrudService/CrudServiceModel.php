@@ -256,7 +256,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
 
         $records = $this->getConnection()->select($this->getFieldsNames(), $this->getTableName(), $where);
 
-        if (count($records) == 0) {
+        if (empty($records)) {
             throw (new \Exception(
                 'Record with id in ' . $ids . ' and domain = ' . ($domainId === false ? 'false' : $domainId) .
                 ' was not found',
