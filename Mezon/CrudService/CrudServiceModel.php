@@ -1,6 +1,8 @@
 <?php
 namespace Mezon\CrudService;
 
+use Mezon\Functional\Fetcher;
+
 /**
  * Class CrudServiceModel
  *
@@ -69,7 +71,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
 
         $connection = $this->getConnection();
 
-        $records = $connection->select($this->getFieldsNames(), $this->getTableName(), implode(' AND ', $where));
+        $records = $connection->select($this->getFieldsNames(), $this->getTableName(), implode('  AND  ', $where));
 
         $this->lastNewRecordsSince($records);
 
@@ -94,13 +96,13 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
         $records = $this->getConnection()->select(
             'COUNT( * ) AS records_count',
             $this->getTableName(),
-            implode(' AND ', $where));
+            implode(' AND  ', $where));
 
         if (empty($records)) {
             return 0;
         }
 
-        return \Mezon\Functional\Functional::getField($records[0], 'records_count');
+        return Fetcher::getField($records[0], 'records_count');
     }
 
     /**
@@ -112,7 +114,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
      */
     protected function getDefaultOrder(array $order): array
     {
-        return !empty($order) ? $order : [
+        return ! empty($order) ? $order : [
             'field' => 'id',
             'order' => 'ASC'
         ];
@@ -141,7 +143,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
         return $this->getConnection()->select(
             $this->getFieldsNames(),
             $this->getTableName(),
-            implode(' AND ', $where) . ' ORDER BY ' . htmlspecialchars($order['field']) . ' ' .
+            implode(' AND  ', $where) . ' ORDER BY ' . htmlspecialchars($order['field']) . ' ' .
             htmlspecialchars($order['order']),
             $from,
             $limit);
@@ -215,7 +217,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
         $records = $this->getConnection()->select(
             $this->getFieldsNames(),
             $this->getTableName(),
-            implode(' AND ', $where) . ' ORDER BY id DESC',
+            implode('  AND ', $where) . ' ORDER BY id DESC',
             0,
             $count);
 
@@ -284,9 +286,9 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
         $records = $this->getConnection()->select(
             $fieldName . ' , COUNT( * ) AS records_count',
             $this->getTableName(),
-            implode(' AND ', $where) . ' GROUP BY ' . $fieldName);
+            implode('  AND ', $where) . ' GROUP BY ' . $fieldName);
 
-        if (count($records) === 0) {
+        if (empty($records)) {
             return [
                 'records_count' => 0
             ];
@@ -306,7 +308,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     public function deleteFiltered($domainId, array $where)
     {
         if ($domainId === false) {
-            return $this->getConnection()->delete($this->getTableName(), implode(' AND ', $where));
+            return $this->getConnection()->delete($this->getTableName(), implode('  AND  ', $where));
         } else {
             return $this->getConnection()->delete(
                 $this->getTableName(),
@@ -337,37 +339,6 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     }
 
     /**
-     * Method fetches fields for model manipulation
-     *
-     * @return array fetched fields
-     */
-    public function fetchFields(): array
-    {
-        // TODO fields must be fetched in the CrudServiceLogic class
-        $record = [];
-
-        foreach ($this->getFields() as $name) {
-            if ($this->getFieldType($name) == 'custom') {
-                // you need to create your own handlers for the custom type
-                continue;
-            }
-            if ($name == 'id' || $name == 'domain_id') {
-                continue;
-            }
-            if ($name == 'modification_date' || $name == 'creation_date') {
-                $record[$name] = 'NOW()';
-                continue;
-            }
-
-            if (isset($_POST[$name])) {
-                $record[$name] = Security::getStringValue($_POST[$name]);
-            }
-        }
-
-        return $record;
-    }
-
-    /**
      * Method inserts basic fields
      *
      * @param array $record
@@ -382,7 +353,7 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
             $record['domain_id'] = $domainId;
         }
 
-        if (count($record) === 0) {
+        if (empty($record)) {
             $msg = 'Trying to create empty record. Be shure that you have passed at least one of these fields : ';
 
             throw (new \Exception($msg . $this->getFieldsNames()));
