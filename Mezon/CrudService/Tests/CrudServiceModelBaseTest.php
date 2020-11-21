@@ -9,25 +9,6 @@ class CrudServiceModelBaseTest extends TestCase
 {
 
     /**
-     * Method returns mock of the DB connection
-     *
-     * @return object Mock of the connection
-     */
-    protected function getConnectionMock()
-    {
-        //TODO replace with PdoCrudMock
-        return $this->getMockBuilder(PdoCrud::class)
-            ->disableOriginalConstructor()
-            ->setMethods([
-            'select',
-            'delete',
-            'update',
-            'insert'
-        ])
-            ->getMock();
-    }
-
-    /**
      * Method returns model's mock
      *
      * @param object $connectionMock

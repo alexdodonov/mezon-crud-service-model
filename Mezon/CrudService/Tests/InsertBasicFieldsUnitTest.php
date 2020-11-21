@@ -3,6 +3,7 @@ namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\PdoCrud;
 use Mezon\CrudService\CrudServiceModel;
+use Mezon\PdoCrud\Tests\PdoCrudMock;
 
 class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
 {
@@ -13,10 +14,7 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
     public function testInsertBasicFields()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->expects($this->once())
-            ->method('insert')
-            ->willReturn(1);
+        $connection = new PdoCrudMock();
         $mock = $this->getModelMock($connection);
 
         // test body
@@ -27,6 +25,7 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
         // assertions
         $this->assertTrue(isset($result['id']), 'Invalid record was returned');
         $this->assertTrue(isset($result['title']), 'Invalid record was returned');
+        $this->assertEquals(1, $connection->insertsCounter);
     }
 
     /**
@@ -38,12 +37,13 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
         $this->expectException(\Exception::class);
 
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->expects($this->never())
-            ->method('insert');
+        $connection = new PdoCrudMock();
         $mock = $this->getModelMock($connection);
 
         // test body
         $mock->insertBasicFields([]);
+
+        // assertions
+        $this->assertEquals(0, $connection->insertsCounter);
     }
 }

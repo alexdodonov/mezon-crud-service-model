@@ -2,6 +2,7 @@
 namespace Mezon\CrudService\Tests;
 
 use Mezon\CrudService\CrudServiceModel;
+use Mezon\PdoCrud\Tests\PdoCrudMock;
 
 class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
 {
@@ -12,14 +13,16 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testRecordsCount0()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->expects($this->once())
-            ->method('select')
-            ->willReturn([]);
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
+            [
+                'records_count' => 0
+            ]
+        ];
         $mock = $this->getModelMock($connection);
 
         // test body and asssertions
-        $this->assertEquals(0, $mock->recordsCount(), 'Invalid error was returned');
+        $this->assertEquals(0, $mock->recordsCount());
     }
 
     /**
@@ -28,14 +31,12 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testRecordsCount1()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->expects($this->once())
-            ->method('select')
-            ->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [
                 'records_count' => 1
             ]
-        ]);
+        ];
         $mock = $this->getModelMock($connection);
 
         // test body and assertions
@@ -70,16 +71,16 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testDeleteFiltered($domainId)
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->expects($this->once())
-            ->method('delete')
-            ->willReturn(1);
+        $connection = new PdoCrudMock();
         $mock = $this->getModelMock($connection);
 
-        // test body and assertions
+        // test body
         $mock->deleteFiltered($domainId, [
             'title LIKE "title"'
         ]);
+
+        // assertions
+        $this->assertEquals(1, $connection->deleteWasCalledCounter);
     }
 
     /**
@@ -136,9 +137,14 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
      */
     public function testConstructorException()
     {
+        // assertions
         $this->expectException(\Exception::class);
 
-        new CrudServiceModel(new \stdClass(), 'entity_name');
+        // test body
+        $model = new CrudServiceModel(new \stdClass(), 'entity_name');
+
+        // more assertions
+        $this->assertEquals('entity_name', $model->getEntityName());
     }
 
     /**
@@ -147,19 +153,18 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testNewRecordsSince()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [],
             []
-        ]);
-
+        ];
         $model = $this->getModelMock($connection);
 
         // test body
         $records = $model->newRecordsSince(false, '2012-01-01');
 
         // assertions
-        $this->assertEquals(2, count($records), 'Invalid count of new records');
+        $this->assertEquals(2, count($records));
     }
 
     /**
@@ -168,12 +173,11 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testGetSimpleRecordsWithoutDomain()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [],
             []
-        ]);
-
+        ];
         $model = $this->getModelMock($connection);
 
         // test body
@@ -192,12 +196,11 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testGetSimpleRecordsWithDomain()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [],
             []
-        ]);
-
+        ];
         $model = $this->getModelMock($connection);
 
         // test body
@@ -216,12 +219,11 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testFetchRecordsByIdsWithDomain()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [],
             []
-        ]);
-
+        ];
         $model = $this->getModelMock($connection);
 
         // test body
@@ -237,12 +239,11 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testFetchRecordsByIdsWithoutDomain()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [],
             []
-        ]);
-
+        ];
         $model = $this->getModelMock($connection);
 
         // test body
@@ -258,9 +259,8 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testFetchRecordsByIdsNotFound()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([]);
-
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [];
         $model = $this->getModelMock($connection);
 
         // test body and assertions
@@ -299,9 +299,8 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testRecordsCountByField(array $selectResult, int $count)
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn($selectResult);
-
+        $connection = new PdoCrudMock();
+        $connection->selectResult = $selectResult;
         $model = $this->getModelMock($connection);
 
         // test body
@@ -317,11 +316,11 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testLastRecords()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [],
             []
-        ]);
+        ];
         $mock = $this->getModelMock($connection);
         $mock->expects($this->once())
             ->method('getRecordsTransformer');
@@ -341,13 +340,12 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     public function testGetRecords()
     {
         // setup
-        $connection = $this->getConnectionMock();
-        $connection->method('select')->willReturn([
+        $connection = new PdoCrudMock();
+        $connection->selectResult = [
             [
                 'id' => 1
             ]
-        ]);
-
+        ];
         $mock = $this->getModelMock($connection);
         $mock->expects($this->once())
             ->method('getRecordsTransformer');
