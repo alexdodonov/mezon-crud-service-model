@@ -25,7 +25,7 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
         // assertions
         $this->assertTrue(isset($result['id']), 'Invalid record was returned');
         $this->assertTrue(isset($result['title']), 'Invalid record was returned');
-        $this->assertEquals(1, $connection->insertsCounter);
+        $this->assertEquals(1, $connection->insertWasCalledCounter);
     }
 
     /**
@@ -44,6 +44,6 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
         $mock->insertBasicFields([]);
 
         // assertions
-        $this->assertEquals(0, $connection->insertsCounter);
+        $this->assertEquals(0, $connection->insertWasCalledCounter);
     }
 }
