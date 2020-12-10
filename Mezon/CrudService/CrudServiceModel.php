@@ -140,13 +140,12 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
         $where = $this->addDomainIdCondition($domainId, $where);
         $order = $this->getDefaultOrder($order);
 
-        return $this->getConnection()->select(
-            $this->getFieldsNames(),
-            $this->getTableName(),
+        $this->getConnection()->prepare(
+            'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
             implode(' AND  ', $where) . ' ORDER BY ' . htmlspecialchars($order['field']) . ' ' .
-            htmlspecialchars($order['order']),
-            $from,
-            $limit);
+            htmlspecialchars($order['order']) . ' LIMIT ' . intval($from) . ', ' . intval($limit));
+
+        return $this->getConnection()->execSelect();
     }
 
     /**
