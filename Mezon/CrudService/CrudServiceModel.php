@@ -142,8 +142,12 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
 
         $this->getConnection()->prepare(
             'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
-            implode(' AND  ', $where) . ' ORDER BY ' . htmlspecialchars($order['field']) . ' ' .
-            htmlspecialchars($order['order']) . ' LIMIT ' . intval($from) . ', ' . intval($limit));
+            implode(' AND  ', $where) . ' ORDER BY :field :order LIMIT :from, :limit');
+
+        $this->getConnection()->bindParameter(':field', $order['field']);
+        $this->getConnection()->bindParameter(':order', $order['order']);
+        $this->getConnection()->bindParameter(':from', $from);
+        $this->getConnection()->bindParameter(':limit', $limit);
 
         return $this->getConnection()->execSelect();
     }

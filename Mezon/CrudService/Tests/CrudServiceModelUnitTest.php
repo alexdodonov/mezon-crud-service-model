@@ -174,7 +174,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResult = [
+        $connection->selectResults[] = [
             [],
             []
         ];
@@ -187,7 +187,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
         ]);
 
         // assertions
-        $this->assertEquals(2, count($records), 'Invalid count of not transformed records');
+        $this->assertCount(2, $records, 'Invalid count of not transformed records');
     }
 
     /**
@@ -197,7 +197,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResult = [
+        $connection->selectResults[] = [
             [],
             []
         ];
@@ -210,7 +210,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
         ]);
 
         // assertions
-        $this->assertEquals(2, count($records), 'Invalid count of not transformed records');
+        $this->assertCount(2, $records, 'Invalid count of not transformed records');
     }
 
     /**
@@ -230,7 +230,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
         $records = $model->fetchRecordsByIds(1, "1,2");
 
         // assertions
-        $this->assertEquals(2, count($records), 'Invalid count of fetched by ids records');
+        $this->assertCount(2, $records, 'Invalid count of fetched by ids records');
     }
 
     /**
@@ -250,7 +250,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
         $records = $model->fetchRecordsByIds(false, "1,2");
 
         // assertions
-        $this->assertEquals(2, count($records), 'Invalid count of fetched by ids records');
+        $this->assertCount(2, $records, 'Invalid count of fetched by ids records');
     }
 
     /**
@@ -331,7 +331,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
         ]);
 
         // assertions
-        $this->assertEquals(2, count($records), 'Invalid amount of records was returned');
+        $this->assertCount(2, $records, 'Invalid amount of records was returned');
     }
 
     /**
@@ -341,7 +341,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResult = [
+        $connection->selectResults[] = [
             [
                 'id' => 1
             ]
