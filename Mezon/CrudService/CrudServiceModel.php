@@ -146,8 +146,8 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
 
         $this->getConnection()->bindParameter(':field', $order['field']);
         $this->getConnection()->bindParameter(':order', $order['order']);
-        $this->getConnection()->bindParameter(':from', $from);
-        $this->getConnection()->bindParameter(':limit', $limit);
+        $this->getConnection()->bindParameter(':from', $from, \PDO::PARAM_INT);
+        $this->getConnection()->bindParameter(':limit', $limit, \PDO::PARAM_INT);
 
         return $this->getConnection()->execSelect();
     }
