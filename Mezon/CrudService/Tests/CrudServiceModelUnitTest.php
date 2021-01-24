@@ -8,42 +8,6 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
 {
 
     /**
-     * Method is testing default value return for empty table
-     */
-    public function testRecordsCount0()
-    {
-        // setup
-        $connection = new PdoCrudMock();
-        $connection->selectResult = [
-            [
-                'records_count' => 0
-            ]
-        ];
-        $mock = $this->getModelMock($connection);
-
-        // test body and asssertions
-        $this->assertEquals(0, $mock->recordsCount());
-    }
-
-    /**
-     * Method is testing default value return for empty table
-     */
-    public function testRecordsCount1()
-    {
-        // setup
-        $connection = new PdoCrudMock();
-        $connection->selectResult = [
-            [
-                'records_count' => 1
-            ]
-        ];
-        $mock = $this->getModelMock($connection);
-
-        // test body and assertions
-        $this->assertEquals(1, $mock->recordsCount(), 'Invalid error was returned');
-    }
-
-    /**
      * Data provider for the testDeleteFiltered
      *
      * @return array Data
@@ -267,47 +231,6 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
         $this->expectException(\Exception::class);
 
         $model->fetchRecordsByIds("1,2", false);
-    }
-
-    /**
-     * Data provider
-     *
-     * @return array Test data
-     */
-    public function recordsCountByFieldProvider(): array
-    {
-        return [
-            [
-                [
-                    'id' => 1,
-                    'records_count' => 2
-                ],
-                2
-            ],
-            [
-                [],
-                0
-            ]
-        ];
-    }
-
-    /**
-     * Testing recordsCountByField method
-     *
-     * @dataProvider recordsCountByFieldProvider
-     */
-    public function testRecordsCountByField(array $selectResult, int $count)
-    {
-        // setup
-        $connection = new PdoCrudMock();
-        $connection->selectResult = $selectResult;
-        $model = $this->getModelMock($connection);
-
-        // test body
-        $result = $model->recordsCountByField(false, 'id', []);
-
-        // assertions
-        $this->assertEquals($count, $result['records_count'], 'Invalid records count was fetched');
     }
 
     /**

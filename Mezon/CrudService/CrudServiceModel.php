@@ -2,6 +2,7 @@
 namespace Mezon\CrudService;
 
 use Mezon\Functional\Fetcher;
+use Mezon\Service\DbServiceModel;
 
 /**
  * Class CrudServiceModel
@@ -18,7 +19,7 @@ use Mezon\Functional\Fetcher;
  *
  * @author Dodonov A.A.
  */
-class CrudServiceModel extends \Mezon\Service\DbServiceModel
+class CrudServiceModel extends DbServiceModel
 {
 
     /**
@@ -69,8 +70,9 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
 
         $where[] = 'creation_date >= "' . date('Y-m-d H:i:s', strtotime($date)) . '"';
 
-        $connection = $this->getConnection();
+        $connection = $this->getApropriateConnection();
 
+        // TODO use executeSelect
         $records = $connection->select($this->getFieldsNames(), $this->getTableName(), implode('  AND  ', $where));
 
         $this->lastNewRecordsSince($records);
@@ -93,7 +95,8 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        $records = $this->getConnection()->select(
+        // TODO use executeSelect
+        $records = $this->getApropriateConnection()->select(
             'COUNT( * ) AS records_count',
             $this->getTableName(),
             implode(' AND  ', $where));
@@ -140,16 +143,16 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
         $where = $this->addDomainIdCondition($domainId, $where);
         $order = $this->getDefaultOrder($order);
 
-        $this->getConnection()->prepare(
+        $this->getApropriateConnection()->prepare(
             'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
             implode(' AND  ', $where) . ' ORDER BY :field :order LIMIT :from, :limit');
 
-        $this->getConnection()->bindParameter(':field', $order['field']);
-        $this->getConnection()->bindParameter(':order', $order['order']);
-        $this->getConnection()->bindParameter(':from', $from, \PDO::PARAM_INT);
-        $this->getConnection()->bindParameter(':limit', $limit, \PDO::PARAM_INT);
+        $this->getApropriateConnection()->bindParameter(':field', $order['field']);
+        $this->getApropriateConnection()->bindParameter(':order', $order['order']);
+        $this->getApropriateConnection()->bindParameter(':from', $from, \PDO::PARAM_INT);
+        $this->getApropriateConnection()->bindParameter(':limit', $limit, \PDO::PARAM_INT);
 
-        return $this->getConnection()->execSelect();
+        return $this->getApropriateConnection()->executeSelect();
     }
 
     /**
@@ -217,7 +220,8 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        $records = $this->getConnection()->select(
+        // TODO use executeSelect
+        $records = $this->getApropriateConnection()->select(
             $this->getFieldsNames(),
             $this->getTableName(),
             implode('  AND ', $where) . ' ORDER BY id DESC',
@@ -257,7 +261,8 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
             $where = 'id IN ( ' . $ids . ' ) AND domain_id = ' . intval($domainId);
         }
 
-        $records = $this->getConnection()->select($this->getFieldsNames(), $this->getTableName(), $where);
+        // TODO use executeSelect
+        $records = $this->getApropriateConnection()->select($this->getFieldsNames(), $this->getTableName(), $where);
 
         if (empty($records)) {
             throw (new \Exception(
@@ -286,7 +291,8 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        $records = $this->getConnection()->select(
+        // TODO use executeSelect
+        $records = $this->getApropriateConnection()->select(
             $fieldName . ' , COUNT( * ) AS records_count',
             $this->getTableName(),
             implode('  AND ', $where) . ' GROUP BY ' . $fieldName);
@@ -310,10 +316,11 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
      */
     public function deleteFiltered($domainId, array $where)
     {
+        // TODO use executeSelect
         if ($domainId === false) {
-            return $this->getConnection()->delete($this->getTableName(), implode('  AND  ', $where));
+            return $this->getApropriateConnection()->delete($this->getTableName(), implode('  AND  ', $where));
         } else {
-            return $this->getConnection()->delete(
+            return $this->getApropriateConnection()->delete(
                 $this->getTableName(),
                 implode(' AND ', $where) . ' AND domain_id = ' . intval($domainId));
         }
@@ -334,8 +341,9 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        $connection = $this->getConnection();
+        $connection = $this->getApropriateConnection();
 
+        // TODO use executeSelect
         $connection->update($this->getTableName(), $record, implode(' AND ', $where));
 
         return $record;
@@ -362,7 +370,8 @@ class CrudServiceModel extends \Mezon\Service\DbServiceModel
             throw (new \Exception($msg . $this->getFieldsNames()));
         }
 
-        $record['id'] = $this->getConnection()->insert($this->getTableName(), $record);
+        // TODO use execute
+        $record['id'] = $this->getApropriateConnection()->insert($this->getTableName(), $record);
 
         return $record;
     }
