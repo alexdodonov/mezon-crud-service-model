@@ -64,7 +64,7 @@ class CrudServiceModel extends DbServiceModel
      *            Start of the period
      * @return array List of records created since $date
      */
-    public function newRecordsSince($domainId, $date)
+    public function newRecordsSince($domainId, $date): array
     {
         $where = $this->addDomainIdCondition($domainId);
 
@@ -138,7 +138,7 @@ class CrudServiceModel extends DbServiceModel
      *            Sorting condition
      * @return array of records
      */
-    public function getSimpleRecords($domainId, $from, $limit, $where, $order = [])
+    public function getSimpleRecords($domainId, $from, $limit, $where, $order = []): array
     {
         $where = $this->addDomainIdCondition($domainId, $where);
         $order = $this->getDefaultOrder($order);
@@ -185,7 +185,7 @@ class CrudServiceModel extends DbServiceModel
      */
     public function getRecords($domainId, $from, $limit, $where = [
         '1=1'
-    ], $order = [])
+    ], $order = []): array
     {
         $records = $this->getSimpleRecords($domainId, $from, $limit, $where, $order);
 
@@ -216,7 +216,7 @@ class CrudServiceModel extends DbServiceModel
      *            Filter conditions
      * @return array List of the last $count records
      */
-    public function lastRecords($domainId, $count, $where)
+    public function lastRecords($domainId, $count, $where): array
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
@@ -253,7 +253,7 @@ class CrudServiceModel extends DbServiceModel
      *            ids of records to be fetched
      * @return array list of records
      */
-    public function fetchRecordsByIds($domainId, string $ids)
+    public function fetchRecordsByIds($domainId, string $ids): array
     {
         if ($domainId === false) {
             $where = 'id IN ( ' . $ids . ' )';
@@ -314,7 +314,7 @@ class CrudServiceModel extends DbServiceModel
      * @param array $where
      *            Filtration conditions
      */
-    public function deleteFiltered($domainId, array $where)
+    public function deleteFiltered($domainId, array $where): int
     {
         // TODO use executeSelect
         if ($domainId === false) {
@@ -337,7 +337,7 @@ class CrudServiceModel extends DbServiceModel
      *            Condition
      * @return array Updated fields
      */
-    public function updateBasicFields($domainId, array $record, array $where)
+    public function updateBasicFields($domainId, array $record, array $where): array
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
@@ -358,7 +358,7 @@ class CrudServiceModel extends DbServiceModel
      *            Id of the domain
      * @return array Inserted record
      */
-    public function insertBasicFields(array $record, $domainId = 0)
+    public function insertBasicFields(array $record, $domainId = 0): array
     {
         if ($this->hasField('domain_id')) {
             $record['domain_id'] = $domainId;
