@@ -138,7 +138,7 @@ class CrudServiceModel extends DbServiceModel
      *            Sorting condition
      * @return array of records
      */
-    public function getSimpleRecords($domainId, $from, $limit, $where, $order = []): array
+    public function getSimpleRecords($domainId, int $from, int $limit, array $where, array $order = []): array
     {
         $where = $this->addDomainIdCondition($domainId, $where);
         $order = $this->getDefaultOrder($order);
@@ -183,9 +183,9 @@ class CrudServiceModel extends DbServiceModel
      *            Sorting condition
      * @return array of records
      */
-    public function getRecords($domainId, $from, $limit, $where = [
+    public function getRecords($domainId, int $from, int $limit, array $where = [
         '1=1'
-    ], $order = []): array
+    ], array $order = []): array
     {
         $records = $this->getSimpleRecords($domainId, $from, $limit, $where, $order);
 
