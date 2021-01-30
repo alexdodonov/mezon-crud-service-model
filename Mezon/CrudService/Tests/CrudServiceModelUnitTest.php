@@ -112,26 +112,6 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     }
 
     /**
-     * Testing newRecordsSince
-     */
-    public function testNewRecordsSince()
-    {
-        // setup
-        $connection = new PdoCrudMock();
-        $connection->selectResult = [
-            [],
-            []
-        ];
-        $model = $this->getModelMock($connection);
-
-        // test body
-        $records = $model->newRecordsSince(false, '2012-01-01');
-
-        // assertions
-        $this->assertEquals(2, count($records));
-    }
-
-    /**
      * Testing getSimpleRecords without domain
      */
     public function testGetSimpleRecordsWithoutDomain()

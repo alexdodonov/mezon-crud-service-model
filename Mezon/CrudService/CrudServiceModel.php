@@ -70,10 +70,11 @@ class CrudServiceModel extends DbServiceModel
 
         $where[] = 'creation_date >= "' . date('Y-m-d H:i:s', strtotime($date)) . '"';
 
-        $connection = $this->getApropriateConnection();
+        $this->getApropriateConnection()->prepare(
+            'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
+            implode('  AND  ', $where));
 
-        // TODO use executeSelect
-        $records = $connection->select($this->getFieldsNames(), $this->getTableName(), implode('  AND  ', $where));
+        $records = $this->getApropriateConnection()->execSelect();
 
         $this->lastNewRecordsSince($records);
 
