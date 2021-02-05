@@ -96,11 +96,9 @@ class CrudServiceModel extends DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        // TODO use executeSelect
-        $records = $this->getApropriateConnection()->select(
-            'COUNT( * ) AS records_count',
-            $this->getTableName(),
-            implode(' AND  ', $where));
+        $this->getApropriateConnection()->prepare(
+            'SELECT COUNT( * ) AS records_count FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND  ', $where));
+        $records = $this->getApropriateConnection()->executeSelect();
 
         if (empty($records)) {
             return 0;

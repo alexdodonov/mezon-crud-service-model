@@ -53,7 +53,7 @@ class RecordsCountUnitTest extends CrudServiceModelBaseTest
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResult = $selectResult;
+        $connection->selectResults[] = $selectResult;
         $mock = $this->getModelMock($connection);
 
         // test body and asssertions
