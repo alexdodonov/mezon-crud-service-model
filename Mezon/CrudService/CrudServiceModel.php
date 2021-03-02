@@ -56,6 +56,19 @@ class CrudServiceModel extends DbServiceModel
     }
 
     /**
+     * Method compiles select query
+     *
+     * @param array $where
+     *            where conditions
+     * @return string select query
+     */
+    private function compileSelectQuery(array $where): string
+    {
+        return 'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
+            implode('  AND  ', $where);
+    }
+
+    /**
      * Method returns all records created since $date
      *
      * @param int|bool $domainId
@@ -70,9 +83,7 @@ class CrudServiceModel extends DbServiceModel
 
         $where[] = 'creation_date >= "' . date('Y-m-d H:i:s', strtotime($date)) . '"';
 
-        $this->getApropriateConnection()->prepare(
-            'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
-            implode('  AND  ', $where));
+        $this->getApropriateConnection()->prepare($this->compileSelectQuery($where));
 
         $records = $this->getApropriateConnection()->execSelect();
 
@@ -143,8 +154,7 @@ class CrudServiceModel extends DbServiceModel
         $order = $this->getDefaultOrder($order);
 
         $this->getApropriateConnection()->prepare(
-            'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
-            implode(' AND  ', $where) . ' ORDER BY :field :order LIMIT :from, :limit');
+            $this->compileSelectQuery($where) . ' ORDER BY :field :order LIMIT :from, :limit');
 
         $this->getApropriateConnection()->bindParameter(':field', $order['field']);
         $this->getApropriateConnection()->bindParameter(':order', $order['order']);
@@ -219,13 +229,10 @@ class CrudServiceModel extends DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        // TODO use executeSelect
-        $records = $this->getApropriateConnection()->select(
-            $this->getFieldsNames(),
-            $this->getTableName(),
-            implode('  AND ', $where) . ' ORDER BY id DESC',
-            0,
-            $count);
+        $this->getApropriateConnection()->prepare(
+            $this->compileSelectQuery($where) . ' ORDER BY id DESC LIMIT 0 , :count');
+        $this->getApropriateConnection()->bindParameter(':count', $count, \PDO::PARAM_INT);
+        $records = $this->getApropriateConnection()->execSelect();
 
         $this->lastRecordsTransformer($records);
 
@@ -260,8 +267,8 @@ class CrudServiceModel extends DbServiceModel
             $where = 'id IN ( ' . $ids . ' ) AND domain_id = ' . intval($domainId);
         }
 
-        // TODO use executeSelect
-        $records = $this->getApropriateConnection()->select($this->getFieldsNames(), $this->getTableName(), $where);
+        $this->getApropriateConnection()->prepare($this->compileSelectQuery([$where]));
+        $records = $this->getApropriateConnection()->execSelect();
 
         if (empty($records)) {
             throw (new \Exception(

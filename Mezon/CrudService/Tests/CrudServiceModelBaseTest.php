@@ -1,7 +1,6 @@
 <?php
 namespace Mezon\CrudService\Tests;
 
-use Mezon\PdoCrud\PdoCrud;
 use Mezon\CrudService\CrudServiceModel;
 use PHPUnit\Framework\TestCase;
 
