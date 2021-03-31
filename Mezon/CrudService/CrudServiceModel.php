@@ -267,7 +267,9 @@ class CrudServiceModel extends DbServiceModel
             $where = 'id IN ( ' . $ids . ' ) AND domain_id = ' . intval($domainId);
         }
 
-        $this->getApropriateConnection()->prepare($this->compileSelectQuery([$where]));
+        $this->getApropriateConnection()->prepare($this->compileSelectQuery([
+            $where
+        ]));
         $records = $this->getApropriateConnection()->execSelect();
 
         if (empty($records)) {
@@ -297,11 +299,10 @@ class CrudServiceModel extends DbServiceModel
     {
         $where = $this->addDomainIdCondition($domainId, $where);
 
-        // TODO use executeSelect
-        $records = $this->getApropriateConnection()->select(
-            $fieldName . ' , COUNT( * ) AS records_count',
-            $this->getTableName(),
-            implode('  AND ', $where) . ' GROUP BY ' . $fieldName);
+        $this->getApropriateConnection()->prepare(
+            'SELECT ' . htmlspecialchars($fieldName) . ', COUNT( * ) AS records_count FROM ' . $this->getTableName() .
+            ' WHERE ' . implode('  AND ', $where) . ' GROUP BY ' . $fieldName);
+        $records = $this->getApropriateConnection()->executeSelect();
 
         if (empty($records)) {
             return [
@@ -322,14 +323,16 @@ class CrudServiceModel extends DbServiceModel
      */
     public function deleteFiltered($domainId, array $where): int
     {
-        // TODO use executeSelect
-        if ($domainId === false) {
-            return $this->getApropriateConnection()->delete($this->getTableName(), implode('  AND  ', $where));
-        } else {
-            return $this->getApropriateConnection()->delete(
-                $this->getTableName(),
-                implode(' AND ', $where) . ' AND domain_id = ' . intval($domainId));
+        if ($domainId !== false) {
+            $where[] = 'domain_id = ' . intval($domainId);
         }
+
+        $this->getApropriateConnection()->prepare(
+            'DELETE FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $where));
+
+        $this->getApropriateConnection()->execute();
+
+        return $this->getApropriateConnection()->rowCount();
     }
 
     /**
