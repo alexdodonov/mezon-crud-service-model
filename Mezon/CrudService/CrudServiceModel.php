@@ -34,28 +34,6 @@ class CrudServiceModel extends DbServiceModel
     }
 
     /**
-     * Method adds domain conditions
-     *
-     * @param int|bool $domainId
-     *            Do we have domain limitations
-     * @param array $where
-     *            where condition
-     * @return array where condition with domain_id limitations
-     */
-    protected function addDomainIdCondition($domainId, array $where = []): array
-    {
-        if ($domainId === false) {
-            if (empty($where)) {
-                $where[] = '1 = 1';
-            }
-        } else {
-            $where[] = 'domain_id = ' . intval($domainId);
-        }
-
-        return $where;
-    }
-
-    /**
      * Method compiles select query
      *
      * @param array $where
@@ -67,6 +45,8 @@ class CrudServiceModel extends DbServiceModel
         return 'SELECT ' . $this->getFieldsNames() . ' FROM ' . $this->getTableName() . ' WHERE ' .
             implode('  AND  ', $where);
     }
+
+    use WhereUtilities;
 
     /**
      * Method returns all records created since $date
