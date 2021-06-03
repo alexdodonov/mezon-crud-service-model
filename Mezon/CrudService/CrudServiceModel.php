@@ -53,7 +53,7 @@ class CrudServiceModel extends DbServiceModel
      *
      * @param int|bool $domainId
      *            Do we have domain limitations
-     * @param \datetime $date
+     * @param string $date
      *            Start of the period
      * @return array List of records created since $date
      */
@@ -79,7 +79,7 @@ class CrudServiceModel extends DbServiceModel
      *            Do we have domain limitations
      * @param array $where
      *            Filter
-     * @return number Amount of records
+     * @return int Amount of records
      */
     public function recordsCount($domainId = false, array $where = [
         '1=1'
