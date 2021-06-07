@@ -97,21 +97,8 @@ class CrudServiceModel extends DbServiceModel
 
         return Fetcher::getField($records[0], 'records_count');
     }
-
-    /**
-     * Method defaults empty order to the default one
-     *
-     * @param array $order
-     *            order data to be defaulted
-     * @return array defaulted order data
-     */
-    protected function getDefaultOrder(array $order): array
-    {
-        return ! empty($order) ? $order : [
-            'field' => 'id',
-            'order' => 'ASC'
-        ];
-    }
+    
+    use OrderUtilities;
 
     /**
      * Method fetches records before transformation
