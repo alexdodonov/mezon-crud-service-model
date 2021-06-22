@@ -2,10 +2,10 @@
 namespace Mezon\CrudService;
 
 /**
- * Trait WhereUtilities
+ * Trait OrderUtilities
  *
  * @package CrudService
- * @subpackage WhereUtilities
+ * @subpackage CrudServiceModel
  * @author Dodonov A.A.
  * @version v.1.0 (2021/05/04)
  * @copyright Copyright (c) 2021, aeon.org

@@ -97,7 +97,7 @@ class CrudServiceModel extends DbServiceModel
 
         return Fetcher::getField($records[0], 'records_count');
     }
-    
+
     use OrderUtilities;
 
     /**
@@ -280,27 +280,7 @@ class CrudServiceModel extends DbServiceModel
         return $records;
     }
 
-    /**
-     * Method deletes filtered records
-     *
-     * @param mixed $domainId
-     *            Domain id
-     * @param array $where
-     *            Filtration conditions
-     */
-    public function deleteFiltered($domainId, array $where): int
-    {
-        if ($domainId !== false) {
-            $where[] = 'domain_id = ' . intval($domainId);
-        }
-
-        $this->getApropriateConnection()->prepare(
-            'DELETE FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $where));
-
-        $this->getApropriateConnection()->execute();
-
-        return $this->getApropriateConnection()->rowCount();
-    }
+    use DeleteFilteredTrait;
 
     /**
      * Method updates records
