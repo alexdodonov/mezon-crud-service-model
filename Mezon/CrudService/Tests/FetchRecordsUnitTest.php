@@ -2,6 +2,7 @@
 namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
+use Mezon\CrudService\CrudServiceModel;
 
 class FetchRecordsUnitTest extends CrudServiceModelBaseTest
 {
@@ -17,7 +18,8 @@ class FetchRecordsUnitTest extends CrudServiceModelBaseTest
             [],
             []
         ];
-        $model = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body
         $records = $model->fetchRecordsByIds(1, "1,2");
@@ -37,7 +39,8 @@ class FetchRecordsUnitTest extends CrudServiceModelBaseTest
             [],
             []
         ];
-        $model = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body
         $records = $model->fetchRecordsByIds(false, "1,2");
@@ -54,7 +57,8 @@ class FetchRecordsUnitTest extends CrudServiceModelBaseTest
         // setup
         $connection = new PdoCrudMock();
         $connection->selectResults [] = [];
-        $model = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body and assertions
         $this->expectException(\Exception::class);

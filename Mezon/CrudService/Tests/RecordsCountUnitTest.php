@@ -2,6 +2,7 @@
 namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
+use Mezon\CrudService\CrudServiceModel;
 
 class RecordsCountUnitTest extends CrudServiceModelBaseTest
 {
@@ -54,10 +55,11 @@ class RecordsCountUnitTest extends CrudServiceModelBaseTest
         // setup
         $connection = new PdoCrudMock();
         $connection->selectResults[] = $selectResult;
-        $mock = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body and asssertions
-        $this->assertEquals($expected, $mock->recordsCount());
+        $this->assertEquals($expected, $model->recordsCount());
     }
 
     /**
@@ -92,7 +94,8 @@ class RecordsCountUnitTest extends CrudServiceModelBaseTest
         // setup
         $connection = new PdoCrudMock();
         $connection->selectResults[] = $selectResult;
-        $model = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body
         $result = $model->recordsCountByField(false, 'id', []);

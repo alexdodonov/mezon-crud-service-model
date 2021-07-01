@@ -1,8 +1,8 @@
 <?php
 namespace Mezon\CrudService\Tests;
 
-use Mezon\CrudService\CrudServiceModel;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
+use Mezon\CrudService\CrudServiceModel;
 
 class DeleteFilteredUnitTest extends CrudServiceModelBaseTest
 {
@@ -36,10 +36,11 @@ class DeleteFilteredUnitTest extends CrudServiceModelBaseTest
     {
         // setup
         $connection = new PdoCrudMock();
-        $mock = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body
-        $mock->deleteFiltered($domainId, [
+        $model->deleteFiltered($domainId, [
             'title LIKE "title"'
         ]);
 

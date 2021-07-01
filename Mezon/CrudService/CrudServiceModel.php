@@ -237,7 +237,7 @@ class CrudServiceModel extends DbServiceModel
         $this->getApropriateConnection()->prepare($this->compileSelectQuery([
             $where
         ]));
-        $records = $this->getApropriateConnection()->execSelect();
+        $records = $this->getApropriateConnection()->executeSelect();
 
         if (empty($records)) {
             throw (new \Exception(

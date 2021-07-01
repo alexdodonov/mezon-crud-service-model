@@ -2,6 +2,7 @@
 namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
+use Mezon\CrudService\CrudServiceModel;
 
 class UpdateBasicFieldsUnitTest extends CrudServiceModelBaseTest
 {
@@ -13,10 +14,11 @@ class UpdateBasicFieldsUnitTest extends CrudServiceModelBaseTest
     {
         // setup
         $connection = new PdoCrudMock();
-        $mock = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body and assertions
-        $mock->updateBasicFields(false, [
+        $model->updateBasicFields(false, [
             'id' => 1
         ], [
             '1=1'

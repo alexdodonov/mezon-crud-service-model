@@ -2,6 +2,7 @@
 namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
+use Mezon\CrudService\CrudServiceModel;
 
 class LastRecordsUnitTest extends CrudServiceModelBaseTest
 {
@@ -17,12 +18,11 @@ class LastRecordsUnitTest extends CrudServiceModelBaseTest
             [],
             []
         ];
-        $mock = $this->getModelMock($connection);
-        $mock->expects($this->once())
-            ->method('getRecordsTransformer');
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body
-        $records = $mock->lastRecords(false, 2, [
+        $records = $model->lastRecords(false, 2, [
             '1 = 1'
         ]);
 
