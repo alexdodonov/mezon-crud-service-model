@@ -34,7 +34,7 @@ trait DeleteFilteredTrait
         }
 
         $this->getApropriateConnection()->prepare(
-            'DELETE /*'.__DIR__.'*/ FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $where));
+            'DELETE FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $where));
 
         $this->getApropriateConnection()->execute();
 
