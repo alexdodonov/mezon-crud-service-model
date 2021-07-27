@@ -35,7 +35,7 @@ In this exact line of code:
 parent::__construct('*', 'entity_table_name');
 ```
 
-We have specified that we need ```'*'``` (all fields) from the table with name ```'entity_table_name'```.
+We have specified that we need `'*'` (all fields) from the table with name `'entity_table_name'`.
 
 If you need only some fields from your database, just list them in the first parameter:
 
@@ -47,11 +47,11 @@ And when you have done this, you will get the following methods.
 
 But before using these methods note that you will need to meet the requirements for some naming conventions.
 
-Field with the primary key must be named as ```id```. I shall add setting to use another name.
+Field with the primary key must be named as `id`. I shall add setting to use another name.
 
-Some methods reqire field ```creation_date``` for fetching new records for example.
+Some methods reqire field `creation_date` for fetching new records for example.
 
-You may add to the table field ```domain_id``` for implementing multy instancing out of the box.
+You may add to the table field `domain_id` for implementing multy instancing out of the box.
 
 Now lets look at available methods:
 
