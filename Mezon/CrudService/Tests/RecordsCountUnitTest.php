@@ -4,6 +4,10 @@ namespace Mezon\CrudService\Tests;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class RecordsCountUnitTest extends CrudServiceModelBaseTest
 {
 
@@ -89,7 +93,7 @@ class RecordsCountUnitTest extends CrudServiceModelBaseTest
      *
      * @dataProvider recordsCountByFieldProvider
      */
-    public function testRecordsCountByField(array $selectResult, int $count)
+    public function testRecordsCountByField(array $selectResult, int $count): void
     {
         // setup
         $connection = new PdoCrudMock();

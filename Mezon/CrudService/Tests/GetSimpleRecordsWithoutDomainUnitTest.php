@@ -4,13 +4,17 @@ namespace Mezon\CrudService\Tests;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class GetSimpleRecordsWithoutDomainUnitTest extends CrudServiceModelBaseTest
 {
 
     /**
      * Testing getSimpleRecords without domain
      */
-    public function testGetSimpleRecordsWithoutDomain()
+    public function testGetSimpleRecordsWithoutDomain(): void
     {
         // setup
         $connection = new PdoCrudMock();

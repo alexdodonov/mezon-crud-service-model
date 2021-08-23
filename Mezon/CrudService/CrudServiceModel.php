@@ -65,7 +65,7 @@ class CrudServiceModel extends DbServiceModel
 
         $this->getApropriateConnection()->prepare($this->compileSelectQuery($where));
 
-        $records = $this->getApropriateConnection()->execSelect();
+        $records = $this->getApropriateConnection()->executeSelect();
 
         $this->lastNewRecordsSince($records);
 
@@ -199,7 +199,7 @@ class CrudServiceModel extends DbServiceModel
         $this->getApropriateConnection()->prepare(
             $this->compileSelectQuery($where) . ' ORDER BY id DESC LIMIT 0 , :count');
         $this->getApropriateConnection()->bindParameter(':count', $count, \PDO::PARAM_INT);
-        $records = $this->getApropriateConnection()->execSelect();
+        $records = $this->getApropriateConnection()->executeSelect();
 
         $this->lastRecordsTransformer($records);
 

@@ -4,6 +4,10 @@ namespace Mezon\CrudService\Tests;
 use Mezon\CrudService\CrudServiceModel;
 use PHPUnit\Framework\TestCase;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class CrudServiceModelBaseTest extends TestCase
 {
 
@@ -14,7 +18,7 @@ class CrudServiceModelBaseTest extends TestCase
      *            Mock of the connection
      * @return object Mock of the model
      */
-    protected function getModelMock($connectionMock)
+    protected function getModelMock($connectionMock): object
     {
         $mock = $this->getMockBuilder(CrudServiceModel::class)
             ->setConstructorArgs([
@@ -25,7 +29,7 @@ class CrudServiceModelBaseTest extends TestCase
             ],
             'table-name'
         ])
-            ->setMethods([
+            ->onlyMethods([
             'getConnection',
             'getRecordsTransformer'
         ])

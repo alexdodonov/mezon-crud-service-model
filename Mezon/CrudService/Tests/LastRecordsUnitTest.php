@@ -4,17 +4,21 @@ namespace Mezon\CrudService\Tests;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class LastRecordsUnitTest extends CrudServiceModelBaseTest
 {
 
     /**
      * Method tests last N records returning
      */
-    public function testLastRecords()
+    public function testLastRecords(): void
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResults [] = [
+        $connection->selectResults[] = [
             [],
             []
         ];

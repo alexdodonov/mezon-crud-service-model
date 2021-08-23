@@ -4,17 +4,21 @@ namespace Mezon\CrudService\Tests;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class FetchRecordsUnitTest extends CrudServiceModelBaseTest
 {
 
     /**
      * Testing fetchRecordsByIds with domain
      */
-    public function testFetchRecordsByIdsWithDomain()
+    public function testFetchRecordsByIdsWithDomain(): void
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResults [] = [
+        $connection->selectResults[] = [
             [],
             []
         ];
@@ -31,11 +35,11 @@ class FetchRecordsUnitTest extends CrudServiceModelBaseTest
     /**
      * Testing fetchRecordsByIds with domain
      */
-    public function testFetchRecordsByIdsWithoutDomain()
+    public function testFetchRecordsByIdsWithoutDomain(): void
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResults [] = [
+        $connection->selectResults[] = [
             [],
             []
         ];
@@ -52,17 +56,17 @@ class FetchRecordsUnitTest extends CrudServiceModelBaseTest
     /**
      * Testing fetchRecordsByIds not found
      */
-    public function testFetchRecordsByIdsNotFound()
+    public function testFetchRecordsByIdsNotFound(): void
     {
         // setup
         $connection = new PdoCrudMock();
-        $connection->selectResults [] = [];
+        $connection->selectResults[] = [];
         $model = new CrudServiceModel();
         $model->setConnection($connection);
 
         // test body and assertions
         $this->expectException(\Exception::class);
 
-        $model->fetchRecordsByIds("1,2", false);
+        $model->fetchRecordsByIds(false, "1,2");
     }
 }

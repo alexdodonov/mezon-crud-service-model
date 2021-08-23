@@ -4,6 +4,10 @@ namespace Mezon\CrudService\Tests;
 use Mezon\CrudService\CrudServiceModel;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
 {
 
@@ -47,7 +51,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
      *            original data for validation
      * @dataProvider constructorTestData
      */
-    public function testConstructor($data, string $origin)
+    public function testConstructor($data, string $origin): void
     {
         // setup and test body
         $model = new CrudServiceModel($data, 'entity_name');
@@ -59,7 +63,7 @@ class CrudServiceModelUnitTest extends CrudServiceModelBaseTest
     /**
      * Testing constructor with exception
      */
-    public function testConstructorException()
+    public function testConstructorException(): void
     {
         // assertions
         $this->expectException(\Exception::class);

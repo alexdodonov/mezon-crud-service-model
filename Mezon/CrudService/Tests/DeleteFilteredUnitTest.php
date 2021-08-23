@@ -4,6 +4,10 @@ namespace Mezon\CrudService\Tests;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class DeleteFilteredUnitTest extends CrudServiceModelBaseTest
 {
 
@@ -32,7 +36,7 @@ class DeleteFilteredUnitTest extends CrudServiceModelBaseTest
      *            
      * @dataProvider deleteFilteredTestData
      */
-    public function testDeleteFiltered($domainId)
+    public function testDeleteFiltered($domainId): void
     {
         // setup
         $connection = new PdoCrudMock();

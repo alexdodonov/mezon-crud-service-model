@@ -4,13 +4,17 @@ namespace Mezon\CrudService\Tests;
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
 {
 
     /**
      * Method tests insertBasicFields method
      */
-    public function testInsertBasicFields()
+    public function testInsertBasicFields(): void
     {
         // setup
         $connection = new PdoCrudMock();
