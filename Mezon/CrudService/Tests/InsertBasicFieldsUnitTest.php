@@ -29,7 +29,7 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
         // assertions
         $this->assertTrue(isset($result['id']), 'Invalid record was returned');
         $this->assertTrue(isset($result['title']), 'Invalid record was returned');
-        $this->assertEquals(1, $connection->insertWasCalledCounter);
+        $this->assertEquals(1, $connection->executeWasCalledCounter);
     }
 
     /**

@@ -326,8 +326,13 @@ class CrudServiceModel extends DbServiceModel
             throw (new \Exception($msg . $this->getFieldsNames()));
         }
 
-        // TODO use execute
-        $record['id'] = $this->getApropriateConnection()->insert($this->getTableName(), $record);
+        $this->getApropriateConnection()->prepare(
+            'INSERT INTO ' . $this->getTableName() . ' SET ' .
+            $this->getApropriateConnection()
+                ->compileSetQuery($record));
+        $this->getApropriateConnection()->execute();
+
+        $record['id'] = $this->getApropriateConnection()->lastInsertId();
 
         return $record;
     }
