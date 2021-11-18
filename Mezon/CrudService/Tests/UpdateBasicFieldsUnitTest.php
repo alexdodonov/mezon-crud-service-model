@@ -5,6 +5,7 @@ use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
 
 /**
+ *
  * @psalm-suppress PropertyNotSetInConstructor
  */
 class UpdateBasicFieldsUnitTest extends CrudServiceModelBaseTest
@@ -28,6 +29,6 @@ class UpdateBasicFieldsUnitTest extends CrudServiceModelBaseTest
         ]);
 
         // assertions
-        $this->assertEquals(1, $connection->updateWasCalledCounter);
+        $this->assertEquals(1, $connection->executeWasCalledCounter);
     }
 }

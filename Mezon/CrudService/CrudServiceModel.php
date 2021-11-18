@@ -26,9 +26,9 @@ class CrudServiceModel extends DbServiceModel
      * Method transforms record before it will be returned with the newRecordsSince method
      *
      * @param array $records
-     *            Record to be transformed
+     *            record to be transformed
      */
-    protected function lastNewRecordsSince(array &$records)
+    protected function lastNewRecordsSince(array &$records): void
     {
         $this->getRecordsTransformer($records);
     }
@@ -52,10 +52,10 @@ class CrudServiceModel extends DbServiceModel
      * Method returns all records created since $date
      *
      * @param int|bool $domainId
-     *            Do we have domain limitations
+     *            do we have domain limitations
      * @param string $date
-     *            Start of the period
-     * @return array List of records created since $date
+     *            start of the period
+     * @return array list of records created since $date
      */
     public function newRecordsSince($domainId, $date): array
     {
@@ -76,10 +76,10 @@ class CrudServiceModel extends DbServiceModel
      * Method returns amount of records in table
      *
      * @param int|bool $domainId
-     *            Do we have domain limitations
+     *            do we have domain limitations
      * @param array $where
-     *            Filter
-     * @return int Amount of records
+     *            filter
+     * @return int amount of records
      */
     public function recordsCount($domainId = false, array $where = [
         '1=1'
@@ -104,16 +104,16 @@ class CrudServiceModel extends DbServiceModel
      * Method fetches records before transformation
      *
      * @param int|bool $domainId
-     *            Id of the domain
+     *            id of the domain
      * @param int $from
-     *            Starting record
+     *            starting record
      * @param int $limit
-     *            Fetch limit
+     *            fetch limit
      * @param array $where
-     *            Fetch condition
+     *            fetch condition
      * @param array $order
-     *            Sorting condition
-     * @return array of records
+     *            sorting condition
+     * @return array array of records
      */
     public function getSimpleRecords($domainId, int $from, int $limit, array $where, array $order = []): array
     {
@@ -135,11 +135,11 @@ class CrudServiceModel extends DbServiceModel
      * Method transforms record before it will be returned with the getRecords method
      *
      * @param array $records
-     *            Record to be transformed
+     *            record to be transformed
      *            
      * @codeCoverageIgnore
      */
-    protected function getRecordsTransformer(array &$records)
+    protected function getRecordsTransformer(array &$records): void
     {
         // should be overriden in the derived class
     }
@@ -148,15 +148,15 @@ class CrudServiceModel extends DbServiceModel
      * Method fetches records after transformation
      *
      * @param int|bool $domainId
-     *            Id of the domain
+     *            id of the domain
      * @param int $from
-     *            Starting record
+     *            starting record
      * @param int $limit
-     *            Fetch limit
+     *            fetch limit
      * @param array $where
-     *            Fetch condition
+     *            fetch condition
      * @param array $order
-     *            Sorting condition
+     *            sorting condition
      * @return array of records
      */
     public function getRecords($domainId, int $from, int $limit, array $where = [
@@ -174,9 +174,9 @@ class CrudServiceModel extends DbServiceModel
      * Method transforms record before it will be returned with the lastRecords method
      *
      * @param array $records
-     *            Record to be transformed
+     *            record to be transformed
      */
-    protected function lastRecordsTransformer(array &$records)
+    protected function lastRecordsTransformer(array &$records): void
     {
         $this->getRecordsTransformer($records);
     }
@@ -185,12 +185,12 @@ class CrudServiceModel extends DbServiceModel
      * Method returns last $count records
      *
      * @param int|bool $domainId
-     *            Id of the domain
+     *            id of the domain
      * @param int $count
-     *            Amount of records to be returned
+     *            amount of records to be returned
      * @param array $where
-     *            Filter conditions
-     * @return array List of the last $count records
+     *            filter conditions
+     * @return array list of the last $count records
      */
     public function lastRecords($domainId, $count, $where): array
     {
@@ -210,9 +210,9 @@ class CrudServiceModel extends DbServiceModel
      * Method transforms record before it will be returned with the fetchRecordsByIds method
      *
      * @param array $records
-     *            Record to be transformed
+     *            record to be transformed
      */
-    protected function fetchRecordsByIdsTransformer(array &$records)
+    protected function fetchRecordsByIdsTransformer(array &$records): void
     {
         $this->getRecordsTransformer($records);
     }
@@ -221,7 +221,7 @@ class CrudServiceModel extends DbServiceModel
      * Method fetches records bythe specified fields
      *
      * @param int|bool $domainId
-     *            Domain id
+     *            domain id
      * @param string $ids
      *            ids of records to be fetched
      * @return array list of records
@@ -255,12 +255,12 @@ class CrudServiceModel extends DbServiceModel
      * Method returns amount of records in table, grouped by the specified field
      *
      * @param int|bool $domainId
-     *            Domain id
+     *            domain id
      * @param string $fieldName
-     *            Grouping field
+     *            grouping field
      * @param array $where
-     *            Filtration conditions
-     * @return array Records with stat
+     *            filtration conditions
+     * @return array records with stat
      */
     public function recordsCountByField($domainId, string $fieldName, array $where): array
     {
@@ -285,13 +285,13 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method updates records
      *
-     * @param
-     *            int DomainId Domain id. Pass false if we want to ignore domain_id security
+     * @param int|bool $domainId
+     *            domain id. Pass false if we want to ignore domain_id security
      * @param array $record
-     *            New values for fields
+     *            new values for fields
      * @param array $where
-     *            Condition
-     * @return array Updated fields
+     *            condition
+     * @return array updated fields
      */
     public function updateBasicFields($domainId, array $record, array $where): array
     {
@@ -299,8 +299,10 @@ class CrudServiceModel extends DbServiceModel
 
         $connection = $this->getApropriateConnection();
 
-        // TODO use executeSelect
-        $connection->update($this->getTableName(), $record, implode(' AND ', $where));
+        $connection->prepare(
+            'UPDATE ' . $this->getTableName() . 'SET ' . $connection->compileSetQuery($record) . ' WHERE ' .
+            implode(' AND ', $where));
+        $connection->execute();
 
         return $record;
     }
@@ -309,10 +311,10 @@ class CrudServiceModel extends DbServiceModel
      * Method inserts basic fields
      *
      * @param array $record
-     *            Record to be inserted
+     *            record to be inserted
      * @param mixed $domainId
-     *            Id of the domain
-     * @return array Inserted record
+     *            id of the domain
+     * @return array inserted record
      */
     public function insertBasicFields(array $record, $domainId = 0): array
     {

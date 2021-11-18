@@ -48,6 +48,6 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
         $mock->insertBasicFields([]);
 
         // assertions
-        $this->assertEquals(0, $connection->insertWasCalledCounter);
+        $this->assertEquals(0, $connection->executeWasCalledCounter);
     }
 }
