@@ -318,7 +318,7 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method inserts basic fields
      *
-     * @param array<string, string> $record
+     * @param array<string, mixed> $record
      *            record to be inserted
      * @param mixed $domainId
      *            id of the domain
