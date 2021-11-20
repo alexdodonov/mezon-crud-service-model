@@ -22,9 +22,9 @@ trait DeleteFilteredTrait
     /**
      * Method deletes filtered records
      *
-     * @param mixed $domainId
+     * @param int|false $domainId
      *            Domain id
-     * @param array $where
+     * @param string[] $where
      *            Filtration conditions
      */
     public function deleteFiltered($domainId, array $where): int

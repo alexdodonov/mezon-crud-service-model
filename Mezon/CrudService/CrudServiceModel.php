@@ -36,9 +36,10 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method compiles select query
      *
-     * @param array $where
+     * @param string[] $where
      *            where conditions
      * @return string select query
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     private function compileSelectQuery(array $where): string
     {
@@ -51,11 +52,12 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method returns all records created since $date
      *
-     * @param int|bool $domainId
+     * @param int|false $domainId
      *            do we have domain limitations
      * @param string $date
      *            start of the period
      * @return array list of records created since $date
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function newRecordsSince($domainId, $date): array
     {
@@ -77,9 +79,10 @@ class CrudServiceModel extends DbServiceModel
      *
      * @param int|bool $domainId
      *            do we have domain limitations
-     * @param array $where
+     * @param string[] $where
      *            filter
      * @return int amount of records
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function recordsCount($domainId = false, array $where = [
         '1=1'
@@ -95,7 +98,7 @@ class CrudServiceModel extends DbServiceModel
             return 0;
         }
 
-        return Fetcher::getField($records[0], 'records_count');
+        return (int)Fetcher::getField($records[0], 'records_count');
     }
 
     use OrderUtilities;
@@ -109,11 +112,12 @@ class CrudServiceModel extends DbServiceModel
      *            starting record
      * @param int $limit
      *            fetch limit
-     * @param array $where
+     * @param string[] $where
      *            fetch condition
      * @param array $order
      *            sorting condition
      * @return array array of records
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function getSimpleRecords($domainId, int $from, int $limit, array $where, array $order = []): array
     {
@@ -153,11 +157,12 @@ class CrudServiceModel extends DbServiceModel
      *            starting record
      * @param int $limit
      *            fetch limit
-     * @param array $where
+     * @param string[] $where
      *            fetch condition
      * @param array $order
      *            sorting condition
      * @return array of records
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function getRecords($domainId, int $from, int $limit, array $where = [
         '1=1'
@@ -184,13 +189,14 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method returns last $count records
      *
-     * @param int|bool $domainId
+     * @param int|false $domainId
      *            id of the domain
      * @param int $count
      *            amount of records to be returned
-     * @param array $where
+     * @param string[] $where
      *            filter conditions
      * @return array list of the last $count records
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function lastRecords($domainId, $count, $where): array
     {
@@ -220,7 +226,7 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method fetches records bythe specified fields
      *
-     * @param int|bool $domainId
+     * @param int|false $domainId
      *            domain id
      * @param string $ids
      *            ids of records to be fetched
@@ -254,13 +260,14 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method returns amount of records in table, grouped by the specified field
      *
-     * @param int|bool $domainId
+     * @param int|false $domainId
      *            domain id
      * @param string $fieldName
      *            grouping field
-     * @param array $where
+     * @param string[] $where
      *            filtration conditions
      * @return array records with stat
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function recordsCountByField($domainId, string $fieldName, array $where): array
     {
@@ -285,13 +292,14 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method updates records
      *
-     * @param int|bool $domainId
+     * @param int|false $domainId
      *            domain id. Pass false if we want to ignore domain_id security
      * @param array $record
      *            new values for fields
-     * @param array $where
+     * @param string[] $where
      *            condition
      * @return array updated fields
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public function updateBasicFields($domainId, array $record, array $where): array
     {
@@ -310,11 +318,12 @@ class CrudServiceModel extends DbServiceModel
     /**
      * Method inserts basic fields
      *
-     * @param array $record
+     * @param array<string, string> $record
      *            record to be inserted
      * @param mixed $domainId
      *            id of the domain
      * @return array inserted record
+     * @psalm-suppress MixedAssignment
      */
     public function insertBasicFields(array $record, $domainId = 0): array
     {

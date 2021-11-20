@@ -3,12 +3,13 @@ namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class RecordsCountUnitTest extends CrudServiceModelBaseTest
+class RecordsCountUnitTest extends TestCase
 {
 
     /**
@@ -53,6 +54,7 @@ class RecordsCountUnitTest extends CrudServiceModelBaseTest
      * @param int $expected
      *            expected result
      * @dataProvider recordsCountDataProvider
+     * @psalm-suppress MixedPropertyTypeCoercion
      */
     public function testRecordsCount(array $selectResult, int $expected): void
     {
@@ -91,7 +93,12 @@ class RecordsCountUnitTest extends CrudServiceModelBaseTest
     /**
      * Testing recordsCountByField method
      *
+     * @param array $selectResult
+     *            select result
+     * @param int $count
+     *            expected count
      * @dataProvider recordsCountByFieldProvider
+     * @psalm-suppress MixedPropertyTypeCoercion
      */
     public function testRecordsCountByField(array $selectResult, int $count): void
     {

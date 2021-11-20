@@ -3,12 +3,13 @@ namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class FetchRecordsUnitTest extends CrudServiceModelBaseTest
+class FetchRecordsUnitTest extends TestCase
 {
 
     /**

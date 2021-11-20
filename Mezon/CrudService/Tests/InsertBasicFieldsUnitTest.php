@@ -3,12 +3,13 @@ namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
+class InsertBasicFieldsUnitTest extends TestCase
 {
 
     /**
@@ -42,10 +43,11 @@ class InsertBasicFieldsUnitTest extends CrudServiceModelBaseTest
 
         // setup
         $connection = new PdoCrudMock();
-        $mock = $this->getModelMock($connection);
+        $model = new CrudServiceModel();
+        $model->setConnection($connection);
 
         // test body
-        $mock->insertBasicFields([]);
+        $model->insertBasicFields([]);
 
         // assertions
         $this->assertEquals(0, $connection->executeWasCalledCounter);
