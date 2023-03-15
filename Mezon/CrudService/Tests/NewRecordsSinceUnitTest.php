@@ -19,9 +19,10 @@ class NewRecordsSinceUnitTest extends TestCase
     {
         // setup
         $connection = new PdoCrudMock();
+        // TODO use CrudServiceModelUnitTestUtilities::setup...
         $connection->selectResults[] = [
-            [],
-            []
+            CrudServiceModelUnitTestUtilities::emptyRecord(),
+            CrudServiceModelUnitTestUtilities::emptyRecord()
         ];
         $model = new CrudServiceModel();
         $model->setConnection($connection);
@@ -30,6 +31,6 @@ class NewRecordsSinceUnitTest extends TestCase
         $records = $model->newRecordsSince(false, '2012-01-01');
 
         // assertions
-        $this->assertEquals(2, count($records));
+        $this->assertCount(2, $records);
     }
 }

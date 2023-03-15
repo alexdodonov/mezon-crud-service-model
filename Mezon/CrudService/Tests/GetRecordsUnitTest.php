@@ -19,10 +19,9 @@ class GetRecordsUnitTest extends TestCase
     {
         // setup
         $connection = new PdoCrudMock();
+        // TODO use CrudServiceModelUnitTestUtilities::setup...
         $connection->selectResults[] = [
-            [
-                'id' => 1
-            ]
+            CrudServiceModelUnitTestUtilities::emptyRecord()
         ];
         $model = new CrudServiceModel();
         $model->setConnection($connection);

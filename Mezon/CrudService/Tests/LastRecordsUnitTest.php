@@ -19,9 +19,10 @@ class LastRecordsUnitTest extends TestCase
     {
         // setup
         $connection = new PdoCrudMock();
+        // TODO use CrudServiceModelUnitTestUtilities::setup...
         $connection->selectResults[] = [
-            [],
-            []
+            CrudServiceModelUnitTestUtilities::emptyRecord(),
+            CrudServiceModelUnitTestUtilities::emptyRecord()
         ];
         $model = new CrudServiceModel();
         $model->setConnection($connection);
@@ -32,6 +33,6 @@ class LastRecordsUnitTest extends TestCase
         ]);
 
         // assertions
-        $this->assertCount(2, $records, 'Invalid amount of records was returned');
+        $this->assertCount(2, $records);
     }
 }

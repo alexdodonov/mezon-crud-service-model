@@ -19,9 +19,10 @@ class FetchRecordsUnitTest extends TestCase
     {
         // setup
         $connection = new PdoCrudMock();
+        // TODO use CrudServiceModelUnitTestUtilities::setup...
         $connection->selectResults[] = [
-            [],
-            []
+            CrudServiceModelUnitTestUtilities::emptyRecord(),
+            CrudServiceModelUnitTestUtilities::emptyRecord()
         ];
         $model = new CrudServiceModel();
         $model->setConnection($connection);
@@ -40,9 +41,10 @@ class FetchRecordsUnitTest extends TestCase
     {
         // setup
         $connection = new PdoCrudMock();
+        // TODO use CrudServiceModelUnitTestUtilities::setup...
         $connection->selectResults[] = [
-            [],
-            []
+            CrudServiceModelUnitTestUtilities::emptyRecord(),
+            CrudServiceModelUnitTestUtilities::emptyRecord()
         ];
         $model = new CrudServiceModel();
         $model->setConnection($connection);

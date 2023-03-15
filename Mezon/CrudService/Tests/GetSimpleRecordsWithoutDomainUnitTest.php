@@ -19,9 +19,10 @@ class GetSimpleRecordsWithoutDomainUnitTest extends TestCase
     {
         // setup
         $connection = new PdoCrudMock();
+        // TODO use CrudServiceModelUnitTestUtilities::setup...
         $connection->selectResults[] = [
-            [],
-            []
+            CrudServiceModelUnitTestUtilities::emptyRecord(),
+            CrudServiceModelUnitTestUtilities::emptyRecord()
         ];
         $model = new CrudServiceModel();
         $model->setConnection($connection);
@@ -33,6 +34,6 @@ class GetSimpleRecordsWithoutDomainUnitTest extends TestCase
         ]);
 
         // assertions
-        $this->assertCount(2, $records, 'Invalid count of not transformed records');
+        $this->assertCount(2, $records);
     }
 }
