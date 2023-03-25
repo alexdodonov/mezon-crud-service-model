@@ -37,11 +37,11 @@ class CrudServiceModelUnitTestUtilities
             $connection = new PdoCrudMock();
         }
 
-        $count = new \stdClass();
-        $count->records_count = $count;
+        $record = new \stdClass();
+        $record->records_count = $count;
 
         $connection->selectResults[] = [
-            $count
+            $record
         ];
 
         CrudServiceModel::setConnection($connection);
