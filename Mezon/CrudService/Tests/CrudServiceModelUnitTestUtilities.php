@@ -3,6 +3,7 @@ namespace Mezon\CrudService\Tests;
 
 use Mezon\PdoCrud\Tests\PdoCrudMock;
 use Mezon\CrudService\CrudServiceModel;
+use Mezon\PdoCrud\Tests\PdoCrudUnitTestUtilities;
 
 class CrudServiceModelUnitTestUtilities
 {
@@ -33,19 +34,37 @@ class CrudServiceModelUnitTestUtilities
      */
     public static function setupRecordsCount(?PdoCrudMock $connection, int $count = 1): PdoCrudMock
     {
-        if ($connection === null) {
-            $connection = new PdoCrudMock();
-        }
+        return PdoCrudUnitTestUtilities::makeMethodCallMock(
+            $connection,
+            function (PdoCrudMock $connection) use ($count) {
+                $record = new \stdClass();
+                $record->records_count = $count;
 
-        $record = new \stdClass();
-        $record->records_count = $count;
+                $connection->selectResults[] = [
+                    $record
+                ];
 
-        $connection->selectResults[] = [
-            $record
-        ];
+                CrudServiceModel::setConnection($connection);
+            });
+    }
 
-        CrudServiceModel::setConnection($connection);
+    /**
+     * Records list method call mock
+     *
+     * @param PdoCrudMock $connection
+     *            connection
+     * @param object[] $records
+     *            records
+     * @return PdoCrudMock connection
+     */
+    public static function setupGetSimpleRecords(?PdoCrudMock $connection, array $records): PdoCrudMock
+    {
+        return PdoCrudUnitTestUtilities::makeMethodCallMock(
+            $connection,
+            function (PdoCrudMock $connection) use ($records) {
+                $connection->selectResults[] = $records;
 
-        return $connection;
+                CrudServiceModel::setConnection($connection);
+            });
     }
 }
